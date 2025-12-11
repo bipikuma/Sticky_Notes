@@ -14,10 +14,7 @@ module.exports = function (config) {
     ],
     client: {
       jasmine: {
-        // you can add configuration options for Jasmine here
-        // the possible options are listed at https://jasmine.github.io/api/edge/Configuration.html
-        // for example, you can disable the random execution with `random: false`
-        // or set a specific seed with `seed: 4321`
+        // Jasmine options can go here
       },
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
@@ -25,20 +22,30 @@ module.exports = function (config) {
       suppressAll: true // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/sticky-notes'),
+      dir: require('path').join(__dirname, './coverage'),
       subdir: '.',
       reporters: [
-        { type: 'html' },
-        { type: 'text-summary' }
+        { type: 'text-summary' } // summary in CLI
       ]
     },
-    reporters: ['progress', 'kjhtml'],
+    reporters: ['coverage'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
-    autoWatch: true,
-    browsers: ['Chrome'],
-    singleRun: false,
-    restartOnFileChange: true
+
+    // In Docker/CI we don’t want autoWatch, we want single run
+    autoWatch: false,
+    singleRun: true,
+
+    // Use headless Chromium with no-sandbox flags
+    browsers: ['ChromeHeadlessNoSandbox'],
+    customLaunchers: {
+      ChromeHeadlessNoSandbox: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox', '--disable-gpu']
+      }
+    },
+
+    restartOnFileChange: false
   });
 };
