@@ -73,6 +73,8 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    $('#signin').particleground();
+    if (typeof $ !== 'undefined' && $) {
+      $('#signin').particleground();
+    }
   }
 }
