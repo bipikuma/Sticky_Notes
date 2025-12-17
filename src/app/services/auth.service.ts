@@ -19,8 +19,11 @@ export class AuthService {
   userData = new BehaviorSubject(null);
 
   saveUserData() {
-    let encodedUserData = JSON.stringify(localStorage.getItem('userToken'));
-    this.userData.next(jwtDecode(encodedUserData));
+    const token = localStorage.getItem('userToken');
+    if (token) {
+      // Decode the JWT token and update the user data observable
+      this.userData.next(jwtDecode(token));
+    }
   }
 
   logOut() {

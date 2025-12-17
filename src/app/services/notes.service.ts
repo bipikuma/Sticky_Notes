@@ -1,5 +1,5 @@
 // this service to get all notes from the api of users notes from backend
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -34,15 +34,7 @@ export class NotesService {
   // this function to delete note from api which recieve noteID and token
   // : observable to be able to make subscribe above it
   deleteNote(data: any): Observable<any> {
-    // you must make this syntax to function of delete only to solve problem of error in token or token not provided
-    let options = {
-      Headers: new HttpHeaders({}),
-      body: {
-        NoteID: data.NoteID,
-        token: data.token,
-      },
-    };
-    // .post take url , body to post in the api
-    return this._HttpClient.delete(this.baseURL + 'deleteNote', options);
+    // Use HttpClient.delete with body option
+    return this._HttpClient.delete(this.baseURL + 'deleteNote', { body: data });
   }
 }
